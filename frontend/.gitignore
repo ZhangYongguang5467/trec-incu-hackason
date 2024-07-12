@@ -1,0 +1,43 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+.DS_Store
+
+# OS specific files
+Thumbs.db
+.DS_Store
+
+# Vue.js build output
+dist/
+build/
+
+# Local environment variables
+.env
+.env.local
+.env.*.local
+
+# Testing
+coverage/
+
+# Other
+*.local
+*.sublime-workspace
+*.swp
+
+# JetBrains IDEs
+*.iml
+out/
+
+# WebStorm
+.idea/
