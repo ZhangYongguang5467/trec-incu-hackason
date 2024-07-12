@@ -1,12 +1,33 @@
 steps:
-  # Build the Docker image for the Go application
+  # Build the Docker image for the Vue 3 application
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/trec-incubation-hackathon/backend', '.']
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/backend', '-f', 'Dockerfile', '.']
 
-  # Push the Docker image for the Go application to Google Container Registry
+  # Push the Docker image for the Vue 3 application to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/trec-incubation-hackathon/backend']
+    args: ['push', 'gcr.io/${_PROJECT_ID}/backend']
 
+  # Apply the Kubernetes deployment configuration
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply', '-f', 'backend.yaml', '--namespace=backend']
+    env:
+    - 'CLOUDSDK_COMPUTE_REGION=${_CLOUDSDK_COMPUTE_REGION}'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
+
+  # Restart the Kubernetes deployment to ensure it uses the latest image
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['rollout', 'restart', 'deployment/backend', '--namespace=backend']
+    env:
+    - 'CLOUDSDK_COMPUTE_REGION=${_CLOUDSDK_COMPUTE_REGION}'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
 
 options:
   logging: CLOUD_LOGGING_ONLY
+
+
+# Substitutions for the Cloud Build
+substitutions:
+  _PROJECT_ID: 'smartcart-stagingization'
+  _CLOUDSDK_CONTAINER_CLUSTER: 'staging-yakiimo-cluster-standard'
+  _CLOUDSDK_COMPUTE_REGION: 'asia-northeast1'
+
