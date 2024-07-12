@@ -1,0 +1,12 @@
+steps:
+  # Build the Docker image for the Go application
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/backend', '.']
+
+  # Push the Docker image for the Go application to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/${_PROJECT_ID}/backend']
+
+
+options:
+  logging: CLOUD_LOGGING_ONLY
