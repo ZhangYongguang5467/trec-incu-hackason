@@ -1,0 +1,33 @@
+steps:
+  # Build the Docker image for the Vue 3 application
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend', '.']
+
+  # Push the Docker image for the Vue 3 application to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/${_PROJECT_ID}/frontend']
+
+  # Apply the Kubernetes deployment configuration
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply', '-f', 'frontend.yaml', '--namespace=frontend']
+    env:
+    - 'CLOUDSDK_COMPUTE_REGION=${_CLOUDSDK_COMPUTE_REGION}'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
+
+  # Restart the Kubernetes deployment to ensure it uses the latest image
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['rollout', 'restart', 'deployment/frontend', '--namespace=frontend']
+    env:
+    - 'CLOUDSDK_COMPUTE_REGION=${_CLOUDSDK_COMPUTE_REGION}'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+
+# Substitutions for the Cloud Build
+substitutions:
+  _PROJECT_ID: 'smartcart-stagingization'
+  _CLOUDSDK_CONTAINER_CLUSTER: 'staging-yakiimo-cluster-standard'
+  _CLOUDSDK_COMPUTE_REGION: 'asia-northeast1'
+
