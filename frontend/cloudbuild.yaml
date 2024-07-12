@@ -1,10 +1,7 @@
 steps:
-  - name: 'alpine'
-    entrypoint: 'sh'
-    args: ['-c', 'echo "Listing contents of /workspace"; ls -la /workspace']
   # Build the Docker image for the Vue 3 application
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend', '-f', 'frontend/Dockerfile', '.']
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend', '-f', '${_CONFIG_PATH}/Dockerfile', '.']
 
   # Push the Docker image for the Vue 3 application to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
@@ -12,7 +9,7 @@ steps:
 
   # Apply the Kubernetes deployment configuration
   - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['apply', '-f', 'frontend.yaml', '--namespace=frontend']
+    args: ['apply', '-f', '${_CONFIG_PATH}/frontend.yaml', '--namespace=frontend']
     env:
     - 'CLOUDSDK_COMPUTE_REGION=${_CLOUDSDK_COMPUTE_REGION}'
     - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
@@ -33,4 +30,5 @@ substitutions:
   _PROJECT_ID: 'smartcart-stagingization'
   _CLOUDSDK_CONTAINER_CLUSTER: 'staging-yakiimo-cluster-standard'
   _CLOUDSDK_COMPUTE_REGION: 'asia-northeast1'
+  _CONFIG_PATH: 'frontend'
 
