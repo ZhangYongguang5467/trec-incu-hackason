@@ -1,7 +1,8 @@
 steps:
   # Build the Docker image for the Vue 3 application
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend', '-f', '${_CONFIG_PATH}/Dockerfile', '.']
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend', '-f', 'Dockerfile', '.']
+    dir: '${_CONFIG_PATH}'
 
   # Push the Docker image for the Vue 3 application to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
@@ -9,7 +10,8 @@ steps:
 
   # Apply the Kubernetes deployment configuration
   - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['apply', '-f', '${_CONFIG_PATH}/frontend.yaml', '--namespace=frontend']
+    args: ['apply', '-f', 'frontend.yaml', '--namespace=frontend']
+    dir: '${_CONFIG_PATH}'
     env:
     - 'CLOUDSDK_COMPUTE_REGION=${_CLOUDSDK_COMPUTE_REGION}'
     - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
