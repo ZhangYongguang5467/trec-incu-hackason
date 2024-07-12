@@ -1,9 +1,10 @@
-FROM node:lts-alpine as build-stage
+FROM node:16-alpine
 
 WORKDIR /app
 
-COPY package.json .
-COPY package-lock.json .
+COPY package*.json ./
+
+RUN ls -la /app/
 
 RUN npm install
 
@@ -11,10 +12,8 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:stable-alpine as production-stage
-
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+RUN npm install -g serve
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["serve", "-s", "dist", "-l", "80"]
