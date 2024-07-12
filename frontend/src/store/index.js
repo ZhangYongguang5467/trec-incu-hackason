@@ -5,7 +5,8 @@ const store = createStore({
     return {
       // Define your state here
       user: null,
-      isLoggedIn: false
+      isLoggedIn: false,
+      token: ''
     };
   },
   mutations: {
@@ -19,6 +20,7 @@ const store = createStore({
     // Define async operations or complex logic
     loginUser({ commit }, userData) {
       // async operation, e.g., send login request
+      commit('setUser', userData);
     }
   },
   getters: {
@@ -28,6 +30,9 @@ const store = createStore({
     },
     currentUser(state) {
       return state.user;
+    },
+    accessToken(state) {
+      return state.token;
     }
   }
 });
