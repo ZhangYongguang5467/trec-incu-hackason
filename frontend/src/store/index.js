@@ -25,15 +25,9 @@ const store = createStore({
   },
   getters: {
     // Define computed properties
-    isLoggedIn(state) {
-      return state.isLoggedIn;
-    },
-    currentUser(state) {
-      return state.user;
-    },
-    accessToken(state) {
-      return state.token;
-    }
+    isLoggedIn: state => state.isLoggedIn,
+    currentUser: state => state.user,
+    accessToken: state => state.token
   }
 });
 
