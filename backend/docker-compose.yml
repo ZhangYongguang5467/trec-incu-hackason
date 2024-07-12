@@ -2,25 +2,25 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:13
+    image: postgres:16
     environment:
       POSTGRES_USER: youruser
       POSTGRES_PASSWORD: yourpassword
-      POSTGRES_DB: yourdbname
+      POSTGRES_DB: bananabee
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - backend
 
   app:
     build: .
-    depends_on:
-      - db
     environment:
       DB_HOST: db
       DB_USER: youruser
       DB_PASSWORD: yourpassword
-      DB_NAME: yourdbname
+      DB_NAME: bananabee
       DB_PORT: 5432
       JWT_SECRET: your_secret_key
     ports:
@@ -28,6 +28,13 @@ services:
     volumes:
       - .:/app
     command: ["./main"]
+    networks:
+      - backend
+    depends_on:
+      - db
 
 volumes:
   db_data:
+networks:
+  backend:
+    external: true
