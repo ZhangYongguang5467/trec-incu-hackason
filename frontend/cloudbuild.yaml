@@ -39,5 +39,5 @@ substitutions:
   _PROJECT_ID: 'smartcart-stagingization'
   _CLOUDSDK_CONTAINER_CLUSTER: 'staging-yakiimo-cluster-standard'
   _CLOUDSDK_COMPUTE_REGION: 'asia-northeast1'
-  _CONFIG_PATH: 'frontend'
+  _CONFIG_PATH: '/workspace/frontend'
 
