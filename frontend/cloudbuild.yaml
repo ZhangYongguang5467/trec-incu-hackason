@@ -1,11 +1,11 @@
 steps:
   # Build the Docker image for the Vue 3 application
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend', '.']
+    args: ['build', '-t', 'gcr.io/trec-incubation-hackathon/frontend', '.']
 
   # Push the Docker image for the Vue 3 application to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/${_PROJECT_ID}/frontend']
+    args: ['push', 'gcr.io/trec-incubation-hackathon/frontend']
 
 options:
   logging: CLOUD_LOGGING_ONLY
