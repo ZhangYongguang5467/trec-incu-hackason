@@ -1,7 +1,10 @@
 steps:
+  - name: 'alpine'
+    entrypoint: 'sh'
+    args: ['-c', 'echo "Listing contents of /workspace"; ls -la /workspace']
   # Build the Docker image for the Vue 3 application
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend', '.']
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend', '-f', 'frontend/Dockerfile', '.']
 
   # Push the Docker image for the Vue 3 application to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
