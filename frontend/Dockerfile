@@ -2,6 +2,10 @@ FROM node:16-alpine
 
 WORKDIR /app
 
+RUN ls -la /workspace
+
+RUN ls -la /workspace/frontend
+
 COPY /workspace/frontend/package*.json ./
 
 RUN ls -la /app/
